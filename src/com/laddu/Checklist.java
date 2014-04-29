@@ -1,35 +1,71 @@
 package com.laddu;
 
+import android.util.Log;
+
+import com.laddu.LadduHttpClient.RequestMethod;
+
 public class Checklist {
 
 	protected static final String TAG = Checklist.class.getSimpleName();
 	ResponseListner listner;
-	
+
 	public Checklist(ResponseListner listner) {
+		Log.d("Laddu", "Checklist");
+		Log.v("Laddu", "Checklist");
 		this.listner = listner;
 	}
 
-	public String getChecklistFromEmail(String email) {
+	public void getChecklistFromEmail(String email) {
 		LadduHttpClient c = new LadduHttpClient(
-				ChouchouUrls.GET_CHECKLIST_URL_EMAIL + email);
-		return c.get();
+				ChouchouUrls.GET_CHECKLIST_URL_EMAIL + email, RequestMethod.GET);
+		c.setProcessResultHandler(new ProcessResult() {
+
+			@Override
+			public void onSuccess(String result) {
+				Log.d("Laddu", result);
+				listner.onResponse(result);
+			}
+		});
+		c.execute();
 	}
 
-	public String getChecklistFromId(String id) {
-		LadduHttpClient c = new LadduHttpClient(ChouchouUrls.GET_CHECKLIST_URL_ID
-				+ id);
-		return c.get();
+	public void getChecklistFromId(String id) {
+		LadduHttpClient c = new LadduHttpClient(
+				ChouchouUrls.GET_CHECKLIST_URL_ID + id, RequestMethod.GET);
+		c.setProcessResultHandler(new ProcessResult() {
+
+			@Override
+			public void onSuccess(String result) {
+				Log.d("Laddu", result);
+				listner.onResponse(result);
+			}
+		});
+		c.execute();
 	}
 
-	public String postChecklist(String params) {
-		LadduHttpClient c = new LadduHttpClient(ChouchouUrls.POST_CHECKLIST_URL,
-				params);
-		return c.post();
+	public void postChecklist(String params) {
+		LadduHttpClient c = new LadduHttpClient(
+				ChouchouUrls.POST_CHECKLIST_URL, params, RequestMethod.POST);
+		c.setProcessResultHandler(new ProcessResult() {
+
+			@Override
+			public void onSuccess(String result) {
+				listner.onResponse(result);
+			}
+		});
+		c.execute();
 	}
 
-	public String putChecklist(String params, String identifier) {
+	public void putChecklist(String params, String identifier) {
 		LadduHttpClient c = new LadduHttpClient(ChouchouUrls.PUT_CHECKLIST_URL
-				+ identifier, params);
-		return c.put();
+				+ identifier, params, RequestMethod.PUT);
+		c.setProcessResultHandler(new ProcessResult() {
+
+			@Override
+			public void onSuccess(String result) {
+				listner.onResponse(result);
+			}
+		});
+		c.execute();
 	}
 }
