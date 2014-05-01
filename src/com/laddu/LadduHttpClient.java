@@ -26,10 +26,6 @@ public class LadduHttpClient extends AsyncTask<Void, Void, String> {
 	private RequestMethod requestMethod;
 	private ProcessResult handler;
 
-	public enum RequestMethod {
-		GET, POST, PUT;
-	}
-
 	public LadduHttpClient(String url, RequestMethod rm) {
 		this.baseUrl = url;
 		this.requestMethod = rm;
@@ -60,7 +56,9 @@ public class LadduHttpClient extends AsyncTask<Void, Void, String> {
 	@Override
 	protected void onPostExecute(String result) {
 		super.onPostExecute(result);
-		handler.onSuccess(result);
+		if(handler != null){
+			handler.onSuccess(result);
+		}
 	}
 
 	private void addHeaders(HttpRequestBase reqType) {
@@ -70,9 +68,9 @@ public class LadduHttpClient extends AsyncTask<Void, Void, String> {
 	public String getHttp() {
 		try {
 			
-			Log.d("Laddu", "URL:"+ ChouchouUrls.protocol + ChouchouUrls.host + baseUrl);
+			Log.d("Laddu", "URL:"+ LadduUrls.protocol + LadduUrls.host + baseUrl);
 			HttpClient client = new DefaultHttpClient();
-			HttpGet get = new HttpGet(ChouchouUrls.protocol + ChouchouUrls.host
+			HttpGet get = new HttpGet(LadduUrls.protocol + LadduUrls.host
 					+ baseUrl);
 			addHeaders(get);
 			HttpResponse response = client.execute(get);
@@ -89,9 +87,9 @@ public class LadduHttpClient extends AsyncTask<Void, Void, String> {
 	public String postHttp() {
 		try {
 			HttpClient client = new DefaultHttpClient();
-			Log.d("Laddu", "URL:"+ ChouchouUrls.protocol + ChouchouUrls.host + baseUrl);
-			HttpPost post = new HttpPost(ChouchouUrls.protocol
-					+ ChouchouUrls.host + baseUrl);
+			Log.d("Laddu", "URL:"+ LadduUrls.protocol + LadduUrls.host + baseUrl);
+			HttpPost post = new HttpPost(LadduUrls.protocol
+					+ LadduUrls.host + baseUrl);
 			addHeaders(post);
 			StringEntity se = new StringEntity(params);
 			se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,
@@ -114,8 +112,8 @@ public class LadduHttpClient extends AsyncTask<Void, Void, String> {
 	public String putHttp() {
 		try {
 			HttpClient client = new DefaultHttpClient();
-			Log.d("Laddu", "URL:"+ ChouchouUrls.protocol + ChouchouUrls.host + baseUrl);
-			HttpPut put = new HttpPut(ChouchouUrls.protocol + ChouchouUrls.host
+			Log.d("Laddu", "URL:"+ LadduUrls.protocol + LadduUrls.host + baseUrl);
+			HttpPut put = new HttpPut(LadduUrls.protocol + LadduUrls.host
 					+ baseUrl);
 			addHeaders(put);
 			StringEntity entity;
@@ -143,7 +141,7 @@ public class LadduHttpClient extends AsyncTask<Void, Void, String> {
 		try {
 			if (response != null) {
 				InputStream is = response.getEntity().getContent();
-				resp = Utility.getStringFromInputStream(is);
+				resp = Util.getStringFromInputStream(is);
 				Log.d("Laddu", "Response:" + resp);
 				// int status = response.getStatusLine().getStatusCode();
 			}

@@ -7,7 +7,26 @@ import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Utility {
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+public class Util {
+	
+	
+	public static boolean isInternetConnected(Context ctx) {
+		ConnectivityManager connectivity = (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+		boolean internetConnected = false;
+		if (connectivity != null) {
+			NetworkInfo[] info = connectivity.getAllNetworkInfo();
+			if (info != null)
+				for (int i = 0; i < info.length; i++)
+					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+						internetConnected = true;
+					}
+		}
+		return internetConnected;
+	}
 
 	public static String getMD5hash(String message) {
 

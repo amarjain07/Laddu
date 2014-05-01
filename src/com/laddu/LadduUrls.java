@@ -1,6 +1,6 @@
 package com.laddu;
 
-public class ChouchouUrls {
+public class LadduUrls {
 
 	public final static String host = "10.70.15.75:5000";
 	public final static String protocol = "http://";
